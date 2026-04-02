@@ -16,6 +16,8 @@ export type Student = {
   image: string;
   noCuenta: string;
   asistencia: boolean;
+  carrera?: string;
+  fechaInscripcion?: string;
 };
 
 export type Workshop = {

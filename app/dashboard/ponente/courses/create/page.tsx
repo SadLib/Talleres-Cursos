@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 export default function CreateCoursePage() {
-  return <div>Formulario para crear curso</div>;
+  redirect("/dashboard/ponente");
 }

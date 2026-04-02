@@ -22,13 +22,16 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
     <>
       <Navbar />
 
-      <section className="bg-blue-900 text-white py-14 text-center">
-        <h1 className="text-4xl font-bold mb-3 max-w-4xl mx-auto px-4">
-          {workshop.nombre}
-        </h1>
-        <p className="text-xl font-light text-blue-100">
-          Detalles del taller e inscripción
-        </p>
+      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-14 text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-yellow-400 to-transparent pointer-events-none"></div>
+        <div className="relative z-10">
+          <h1 className="text-4xl font-bold mb-3 max-w-4xl mx-auto px-4">
+            {workshop.nombre}
+          </h1>
+          <p className="text-xl font-light text-blue-100">
+            Detalles del taller e inscripción
+          </p>
+        </div>
       </section>
 
       <section className="py-12 px-6 lg:px-10 max-w-6xl mx-auto">

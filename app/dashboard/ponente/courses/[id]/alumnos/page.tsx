@@ -78,32 +78,31 @@ export default function AlumnosTallerPage({ params }: { params: Promise<{ id: st
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-gray-50 border-b border-gray-100 text-sm uppercase text-gray-500">
+                  <tr className="bg-gray-50 border-b border-gray-100 text-sm uppercase text-gray-500 whitespace-nowrap">
                     <th className="p-5 font-semibold">Alumno</th>
+                    <th className="p-5 font-semibold">Correo</th>
                     <th className="p-5 font-semibold">No. de Cuenta</th>
-                    <th className="p-5 font-semibold">Contacto</th>
+                    <th className="p-5 font-semibold">Carrera</th>
+                    <th className="p-5 font-semibold">Fecha Inscripción</th>
                     <th className="p-5 font-semibold text-center">Asistencia</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {alumnos.map((alumno) => (
-                    <tr key={alumno.id} className="hover:bg-gray-50/50 transition">
+                    <tr key={alumno.id} className="hover:bg-gray-50/50 transition whitespace-nowrap">
                       
                       {/* Alumno (Foto y Nombre) */}
                       <td className="p-5 flex items-center gap-4">
-                        <Image
-                          src={alumno.image}
-                          alt={alumno.name}
-                          width={48}
-                          height={48}
-                          className="rounded-full object-cover shadow-sm bg-gray-200"
-                        />
+                        <div className="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden shadow-sm bg-gray-200 mask mask-circle">
+                          <Image
+                            src={alumno.image}
+                            alt={alumno.name}
+                            width={48}
+                            height={48}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
                         <span className="font-bold text-gray-800">{alumno.name}</span>
-                      </td>
-
-                      {/* No Cuenta */}
-                      <td className="p-5 text-gray-600 font-mono text-sm">
-                        {alumno.noCuenta}
                       </td>
 
                       {/* Correo */}
@@ -111,20 +110,37 @@ export default function AlumnosTallerPage({ params }: { params: Promise<{ id: st
                         {alumno.email}
                       </td>
 
+                      {/* No Cuenta */}
+                      <td className="p-5 text-gray-700 font-mono text-sm">
+                        {alumno.noCuenta}
+                      </td>
+
+                      {/* Carrera */}
+                      <td className="p-5 text-gray-600 text-sm font-medium">
+                        {alumno.carrera || "Ingeniería en Computación"}
+                      </td>
+
+                      {/* Fecha Inscripción */}
+                      <td className="p-5 text-gray-500 text-sm">
+                        {alumno.fechaInscripcion || "01 Abr 2026"}
+                      </td>
+
                       {/* Asistencia (Toggle) */}
-                      <td className="p-5 flex justify-center items-center h-[88px]">
-                        <button
-                          onClick={() => handleToggleAsistencia(alumno.id)}
-                          className={`relative w-14 h-7 flex items-center rounded-full p-1 cursor-pointer transition-colors ${
-                            alumno.asistencia ? "bg-green-500" : "bg-gray-300"
-                          }`}
-                        >
-                          <div
-                            className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${
-                              alumno.asistencia ? "translate-x-7" : "translate-x-0"
+                      <td className="p-5">
+                        <div className="flex justify-center items-center">
+                          <button
+                            onClick={() => handleToggleAsistencia(alumno.id)}
+                            className={`relative w-14 h-7 flex items-center rounded-full p-1 cursor-pointer transition-colors ${
+                              alumno.asistencia ? "bg-green-500" : "bg-gray-300"
                             }`}
-                          />
-                        </button>
+                          >
+                            <div
+                              className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${
+                                alumno.asistencia ? "translate-x-7" : "translate-x-0"
+                              }`}
+                            />
+                          </button>
+                        </div>
                       </td>
 
                     </tr>

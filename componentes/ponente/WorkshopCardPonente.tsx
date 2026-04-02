@@ -42,9 +42,12 @@ export function WorkshopCardPonente({ taller }: { taller: Workshop }) {
 
       {/* Acciones */}
       <div className="flex flex-row md:flex-col gap-2 justify-center w-full md:w-auto">
-        <button className="bg-yellow-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-yellow-700 transition w-full shadow-sm text-sm">
+        <Link
+          href={`/dashboard/ponente/courses/${taller.id}/edit`}
+          className="bg-yellow-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-yellow-700 transition w-full shadow-sm text-sm text-center"
+        >
           ✏️ Editar
-        </button>
+        </Link>
 
         <button className="border border-red-200 text-red-600 font-medium px-4 py-2 rounded-lg hover:bg-red-50 hover:border-red-300 transition w-full text-sm">
           🗑️ Eliminar

@@ -19,8 +19,9 @@ export default async function SpeakerDetailPage({ params }: { params: Promise<{ 
     <>
       <Navbar />
 
-      <section className="bg-blue-900 text-white py-16 relative">
-        <div className="max-w-4xl mx-auto px-10 flex flex-col md:flex-row items-center gap-8">
+      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-16 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-yellow-400 to-transparent pointer-events-none"></div>
+        <div className="max-w-4xl mx-auto px-10 flex flex-col md:flex-row items-center gap-8 relative z-10">
           <Image
             src={speaker.image}
             alt={speaker.name}
