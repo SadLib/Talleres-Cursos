@@ -1,23 +1,39 @@
 "use client";
 
 import { useState } from "react";
-import Tabs from "@/componentes/profile/Tabs";
-import Datos from "@/componentes/profile/Datos";
-import Talleres from "@/componentes/profile/Talleres";
-import Certificados from "@/componentes/profile/Certificados";
+import Navbar from "@/componentes/Navbar";
+import Footer from "@/componentes/Footer";
+
+import ProfileTabs from "@/componentes/profile/ProfileTabs";
+import PersonalData from "@/componentes/profile/PersonalData";
+import UserWorkshops from "@/componentes/profile/UserWorkshops";
+import Certificates from "@/componentes/profile/Certificates";
 
 export default function ProfilePage() {
-  const [tab, setTab] = useState("datos");
+  const [activeTab, setActiveTab] = useState<
+    "personal" | "talleres" | "certificados"
+  >("personal");
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Mi Perfil</h1>
+    <div className="min-h-screen bg-[#f2f9ff] flex flex-col">
+      <Navbar />
 
-      <Tabs setTab={setTab} />
+      <main className="flex-1 max-w-6xl mx-auto w-full px-6 py-10">
+        <h1 className="text-3xl font-bold mb-2">Mi Perfil</h1>
+        <p className="text-gray-600 mb-6">
+          Gestiona tu información y revisa tus talleres
+        </p>
 
-      {tab === "datos" && <Datos />}
-      {tab === "talleres" && <Talleres />}
-      {tab === "certificados" && <Certificados />}
+        <ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+
+        <div className="mt-6">
+          {activeTab === "personal" && <PersonalData />}
+          {activeTab === "talleres" && <UserWorkshops />}
+          {activeTab === "certificados" && <Certificates />}
+        </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }
