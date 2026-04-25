@@ -49,9 +49,9 @@ export default function UserWorkshops() {
   return (
     <div className="bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl p-8 border border-gray-100 relative max-w-6xl mx-auto">
       <div className="mb-8 border-b border-gray-100 pb-5">
-        <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">Mis Talleres</h2>
+        <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">Mis Talleres y Cursos</h2>
         <p className="text-gray-500 text-sm mt-1">
-          Aquí encuentras los talleres en los que estás inscrito y tu estatus.
+          Aquí encuentras los talleres y cursos en los que estás inscrito y tu estatus.
         </p>
       </div>
 
@@ -60,12 +60,12 @@ export default function UserWorkshops() {
           <div key={workshop.id} className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-lg transition overflow-hidden flex flex-col w-full h-full mx-auto">
             {/* Imagen 4:3 */}
             <div className="relative w-full aspect-[4/3] bg-gray-200 shrink-0">
-               <Image 
-                 src="/images/hero.jpg" 
-                 alt={workshop.nombre} 
-                 fill 
-                 className="object-cover"
-               />
+              <Image
+                src="/images/hero.jpg"
+                alt={workshop.nombre}
+                fill
+                className="object-cover"
+              />
             </div>
 
             <div className="p-5 flex flex-col flex-grow text-left">
@@ -84,7 +84,7 @@ export default function UserWorkshops() {
                     </svg>
                     <span>{workshop.fecha}</span>
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />

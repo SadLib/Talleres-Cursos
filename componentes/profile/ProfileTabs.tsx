@@ -11,7 +11,7 @@ export default function ProfileTabs({
 }) {
   const tabs = [
     { id: "personal", label: "Datos Personales" },
-    { id: "talleres", label: "Mis Talleres" },
+    { id: "talleres", label: "Mis Talleres y Cursos" },
     { id: "certificados", label: "Certificados" },
   ] as const;
 
@@ -21,11 +21,10 @@ export default function ProfileTabs({
         <button
           key={tab.id}
           onClick={() => setActiveTab(tab.id)}
-          className={`flex-1 py-4 text-sm font-medium transition ${
-            activeTab === tab.id
+          className={`flex-1 py-4 text-sm font-medium transition ${activeTab === tab.id
               ? "bg-[#fdf3d7] border-b-4 border-[#c58600]"
               : "hover:bg-gray-50"
-          }`}
+            }`}
         >
           {tab.label}
         </button>

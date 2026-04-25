@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 py-16 mt-auto">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
-        
+
         {/* About Section */}
         <div className="md:col-span-2">
           <h2 className="text-2xl font-bold text-white tracking-tight mb-4">MAC</h2>
@@ -31,7 +31,10 @@ export default function Footer() {
               <Link href="/courses" className="hover:text-yellow-500 transition-colors">Talleres</Link>
             </li>
             <li>
-              <Link href="/speakers" className="hover:text-yellow-500 transition-colors">Ponentes</Link>
+              <Link href="/speakers" className="hover:text-yellow-500 transition-colors">Instructores</Link>
+            </li>
+            <li>
+              <Link href="/ayuda" className="hover:text-yellow-500 transition-colors">Ayuda</Link>
             </li>
           </ul>
         </div>

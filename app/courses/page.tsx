@@ -4,6 +4,17 @@ import { useState } from "react";
 import Navbar from "@/componentes/Navbar";
 import Footer from "@/componentes/Footer";
 import WorkshopCard from "@/componentes/home/WorkshopCard";
+import FAQSection from "@/componentes/FAQSection";
+import Image from "next/image";
+
+const faqsCursos = [
+  { question: "¿Cómo sé si hay cupo en un curso?", answer: "Si aparece la opcion de inscribirme, entonces el taller aun cuenta con cupo" },
+  { question: "¿Hay un horario específico para los cursos en línea?", answer: "Sí, aunque sean en línea, los talleres tienen horarios definidos. Revisa la información del curso para no perderte las sesiones en vivo." },
+  { question: "¿Pueden darme de baja de un taller?", answer: "Si acumulas varias faltas o incumples el reglamento de la persona ponente, podrías recibir una baja y no recibirás el certificado final." },
+  { question: "¿Que pasa si un taller es en linea?", answer: "Si el taller es en linea, se te indicara la plataforma por la cual sera llevado, y por tu correo se te sera enviado el link correspondiente a el taller/curso." },
+  { question: "¿Puedo cancelar mi inscripción?", answer: "Aparecera un boton de cancelar inscripcion en el detalle del curso, siempre y cuando no se haya iniciado el taller." },
+  { question: "¿Como se que mi inscripcion fue aceptada?", answer: "Te aparecera un mensaje de exito al apretar confirmar inscripcion en el formulario de inscripcion, tambien podras verificar tu inscripcion en la pagina de mis talleres en tu perfil." }
+];
 
 import { workshopsData } from "@/lib/data";
 
@@ -20,11 +31,11 @@ export default function CoursesPage() {
       <Navbar />
 
       {/* 🔵 HEADER */}
-      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-14 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-yellow-400 to-transparent pointer-events-none"></div>
+      <section className="bg-blue-950 text-white py-14 text-center relative overflow-hidden">
+        <Image src="/images/fondo2.png" alt="Fondo" fill className="object-cover object-center opacity-85 pointer-events-none" priority />
         <div className="relative z-10">
           <h1 className="text-4xl font-bold mb-3">
-            Catálogo de Talleres
+            Catálogo de Talleres y Cursos
           </h1>
           <p className="text-xl font-light text-blue-100">
             Explora nuestra oferta y encuentra el perfecto para ti
@@ -35,7 +46,7 @@ export default function CoursesPage() {
       {/* 🔍 BUSCADOR */}
       <section className="bg-gray-100 py-6 flex justify-center px-6">
         <div className="bg-white shadow-sm rounded-xl p-4 w-full max-w-3xl flex gap-4 items-center border border-gray-100">
-          
+
           <span className="text-gray-500 text-sm whitespace-nowrap font-medium">
             {filteredCourses.length} talleres
           </span>
@@ -76,6 +87,8 @@ export default function CoursesPage() {
           </p>
         )}
       </section>
+
+      <FAQSection faqs={faqsCursos} title="Dudas sobre los cursos" subtitle="Información rápida sobre inscripciones y asistencias" />
 
       <Footer />
     </>

@@ -8,7 +8,7 @@ export default function CursosList() {
 
   return (
     <div>
-      <Link href="/dashboard/instructor/courses/create">
+      <Link href="/ponente/dashboard">
         <button className="mb-4">Crear curso</button>
       </Link>
 
@@ -16,7 +16,7 @@ export default function CursosList() {
         <div key={course.id} className="border p-4 mb-2">
           <h2>{course.title}</h2>
 
-          <Link href={`/dashboard/instructor/courses/${course.id}`}>
+          <Link href={`/ponente/dashboard/courses/${course.id}`}>
             Ver detalles
           </Link>
         </div>

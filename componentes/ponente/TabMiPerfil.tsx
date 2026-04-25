@@ -6,8 +6,8 @@ import Image from "next/image";
 export function TabMiPerfil() {
   const [profile, setProfile] = useState({
     nombre: "Juan",
-    paterno: "Pérez",
-    materno: "López",
+    primerApellido: "Pérez",
+    segundoApellido: "López",
     afiliacion: "interno",
     correo: "juan@email.com",
     telefono: "5512345678",
@@ -73,22 +73,22 @@ export function TabMiPerfil() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Apellido Paterno</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Primer Apellido</label>
                 <input
                   type="text"
                   required
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-900"
-                  value={profile.paterno}
-                  onChange={(e) => setProfile({ ...profile, paterno: e.target.value })}
+                  value={profile.primerApellido}
+                  onChange={(e) => setProfile({ ...profile, primerApellido: e.target.value })}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Apellido Materno</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Segundo Apellido</label>
                 <input
                   type="text"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-900"
-                  value={profile.materno}
-                  onChange={(e) => setProfile({ ...profile, materno: e.target.value })}
+                  value={profile.segundoApellido}
+                  onChange={(e) => setProfile({ ...profile, segundoApellido: e.target.value })}
                 />
               </div>
             </div>
@@ -137,8 +137,8 @@ export function TabMiPerfil() {
                   onChange={(e) => setProfile({ ...profile, afiliacion: e.target.value })}
                 >
                   <option value="">Selecciona una afiliación...</option>
-                  <option value="interno">Interno</option>
-                  <option value="alumno">Alumno</option>
+                  <option value="interno">Interno (Personal de la facultad)</option>
+                  <option value="estudiante">Estudiante</option>
                   <option value="externo">Externo</option>
                 </select>
               </div>
@@ -173,7 +173,7 @@ export function TabMiPerfil() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Breve Descripción sobre ti</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Biografía (Ayuda a las presentaciones de los ponentes)</label>
             <textarea
                required
                rows={4}

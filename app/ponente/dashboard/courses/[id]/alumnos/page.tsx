@@ -30,17 +30,17 @@ export default function AlumnosTallerPage({ params }: { params: Promise<{ id: st
   const handeGlobalCertificate = () => {
     const attendees = alumnos.filter(a => a.asistencia);
     if(attendees.length === 0) {
-      alert("No hay alumnos con asistencia marcada para enviar certificados.");
+      alert("No hay participantes con asistencia marcada para enviar certificados.");
       return;
     }
-    alert(`Enviando ${attendees.length} certificados globalmente a los alumnos que asistieron... (Simulación)`);
+    alert(`Enviando ${attendees.length} certificados globalmente a los participantes que asistieron... (Simulación)`);
   };
 
   if (!taller) {
     return (
       <div className="p-10 text-center">
         <h2 className="text-2xl font-bold text-gray-800">Taller no encontrado</h2>
-        <Link href="/dashboard/ponente" className="text-blue-600 hover:text-blue-800 underline mt-4 inline-block">
+        <Link href="/ponente/dashboard" className="text-blue-600 hover:text-blue-800 underline mt-4 inline-block">
           Volver al panel principal
         </Link>
       </div>
@@ -55,13 +55,13 @@ export default function AlumnosTallerPage({ params }: { params: Promise<{ id: st
         <div className="mb-8 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
           <div>
             <Link 
-              href="/dashboard/ponente" 
+              href="/ponente/dashboard" 
               className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 mb-4 transition-colors"
             >
               ← Volver a mis talleres
             </Link>
             <h1 className="text-3xl font-extrabold text-gray-900">{taller.nombre}</h1>
-            <p className="text-gray-600 mt-1">Alumnos inscritos y control de asistencia.</p>
+            <p className="text-gray-600 mt-1">Participantes y control de asistencia.</p>
           </div>
           
           <button 
@@ -79,7 +79,7 @@ export default function AlumnosTallerPage({ params }: { params: Promise<{ id: st
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-100 text-sm uppercase text-gray-500 whitespace-nowrap">
-                    <th className="p-5 font-semibold">Alumno</th>
+                    <th className="p-5 font-semibold">Participante</th>
                     <th className="p-5 font-semibold">Correo</th>
                     <th className="p-5 font-semibold">No. de Cuenta</th>
                     <th className="p-5 font-semibold">Carrera</th>
@@ -91,7 +91,7 @@ export default function AlumnosTallerPage({ params }: { params: Promise<{ id: st
                   {alumnos.map((alumno) => (
                     <tr key={alumno.id} className="hover:bg-gray-50/50 transition whitespace-nowrap">
                       
-                      {/* Alumno (Foto y Nombre) */}
+                      {/* Participante (Foto y Nombre) */}
                       <td className="p-5 flex items-center gap-4">
                         <div className="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden shadow-sm bg-gray-200 mask mask-circle">
                           <Image
@@ -112,7 +112,7 @@ export default function AlumnosTallerPage({ params }: { params: Promise<{ id: st
 
                       {/* No Cuenta */}
                       <td className="p-5 text-gray-700 font-mono text-sm">
-                        {alumno.noCuenta}
+                        {alumno.numeroCuenta}
                       </td>
 
                       {/* Carrera */}
@@ -150,7 +150,7 @@ export default function AlumnosTallerPage({ params }: { params: Promise<{ id: st
             </div>
           ) : (
             <div className="p-10 text-center text-gray-500">
-              <p>Aún no hay alumnos inscritos en este taller.</p>
+              <p>Aún no hay participantes en este taller.</p>
             </div>
           )}
         </div>

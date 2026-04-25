@@ -1,9 +1,16 @@
 import Navbar from "@/componentes/Navbar";
 import Footer from "@/componentes/Footer";
+import FAQSection from "@/componentes/FAQSection";
 import { speakersData, workshopsData } from "@/lib/data";
 import WorkshopCard from "@/componentes/home/WorkshopCard";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+
+const faqsPonente = [
+  { question: "¿Puedo contactar directamente a esta persona ponente?", answer: "Sí, puedes escribirle al correo electrónico que aparece en su perfil. Te sugerimos ser claro y respetuoso en tu mensaje." },
+  { question: "¿Dónde puedo ver los talleres que ha impartido?", answer: "Justo debajo de la sección 'Acerca de' encontrarás la lista de talleres impartidos por esta persona ponente, con opción de inscribirte si aún hay cupos." },
+  { question: "¿Puedo solicitar un taller sobre un tema específico?", answer: "Sí, puedes comunicarte con la persona ponente o con el equipo administrador para sugerir temas de interés. Las propuestas son evaluadas periódicamente." }
+];
 
 export default async function SpeakerDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -19,21 +26,26 @@ export default async function SpeakerDetailPage({ params }: { params: Promise<{ 
     <>
       <Navbar />
 
-      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-16 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-yellow-400 to-transparent pointer-events-none"></div>
+      <section className="bg-blue-950 text-white py-16 relative overflow-hidden">
+        <Image src="/images/fondo2.png" alt="Fondo" fill className="object-cover object-center opacity-85 pointer-events-none" priority />
         <div className="max-w-4xl mx-auto px-10 flex flex-col md:flex-row items-center gap-8 relative z-10">
+    
+        <div className="w-[150px] h-[150px] rounded-full overflow-hidden shadow-lg">
           <Image
             src={speaker.image}
             alt={speaker.name}
             width={150}
             height={150}
-            className="rounded-full border-4 border-white shadow-lg object-cover"
-          />
-          <div className="text-center md:text-left">
-            <h1 className="text-4xl font-bold mb-2">{speaker.name}</h1>
-            <p className="text-xl text-blue-200">{speaker.career}</p>
-            <p className="text-md text-blue-100 mt-1">{speaker.specialty}</p>
+            className="object-cover w-full h-full"
+           />
           </div>
+
+          <div className="text-center md:text-left">
+          <h1 className="text-4xl font-bold mb-2">{speaker.name}</h1>
+          <p className="text-xl text-blue-200">{speaker.career}</p>
+          <p className="text-md text-blue-100 mt-1">{speaker.specialty}</p>
+        </div>
+
         </div>
       </section>
 
@@ -55,10 +67,12 @@ export default async function SpeakerDetailPage({ params }: { params: Promise<{ 
               ))}
             </div>
           ) : (
-            <p className="text-gray-500">Este ponente no tiene talleres asignados por el momento.</p>
+            <p className="text-gray-500">Esta persona ponente no tiene talleres asignados por el momento.</p>
           )}
         </div>
       </section>
+
+      <FAQSection faqs={faqsPonente} title="Preguntas frecuentes" subtitle="Resolvemos tus dudas sobre esta persona ponente" />
 
       <Footer />
     </>

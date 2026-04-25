@@ -1,10 +1,19 @@
 import Navbar from "@/componentes/Navbar";
 import Footer from "@/componentes/Footer";
+import FAQSection from "@/componentes/FAQSection";
 import { workshopsData, speakersData } from "@/lib/data";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ActionBox } from "@/componentes/course/ActionBox";
+import SpeakerCard from "@/componentes/ponente/SpeakerCard";
+
+const faqsCursoDetalle = [
+  { question: "¿Cómo me inscribo a este taller?", answer: "Haz clic en el botón 'Inscribirse al Taller' en el panel lateral. Antes de confirmar, se mostrarán tus datos registrados para verificación. Asegúrate de tener tu perfil completo." },
+  { question: "¿Puedo cancelar mi inscripción?", answer: "Sí, una vez inscrito aparecerá la opción de cancelar inscripción en esta misma página. Te recomendamos cancelar a tiempo para liberar tu lugar." },
+  { question: "¿Qué pasa si no asisto al taller?", answer: "Si no asistes, no recibirás el certificado correspondiente. En futuros talleres, el historial de asistencia puede ser considerado para la asignación de cupos." },
+  { question: "¿Recibiré un certificado al finalizar?", answer: "Sí, al concluir el taller y una vez que la persona ponente confirme tu asistencia, se generará automáticamente un certificado descargable desde tu perfil." }
+];
 
 export default async function CourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -22,8 +31,8 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
     <>
       <Navbar />
 
-      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-14 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-yellow-400 to-transparent pointer-events-none"></div>
+      <section className="bg-blue-950 text-white py-14 text-center relative overflow-hidden">
+        <Image src="/images/fondo2.png" alt="Fondo" fill className="object-cover object-center opacity-85 pointer-events-none" priority />
         <div className="relative z-10">
           <h1 className="text-4xl font-bold mb-3 max-w-4xl mx-auto px-4">
             {workshop.nombre}
@@ -42,16 +51,41 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
             
             {/* Box 1: Descripción del Curso */}
             <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
-              <h2 className="text-2xl font-bold mb-4 text-gray-800">Descripción del Curso</h2>
+              <h2 className="text-2xl font-bold mb-4 text-gray-800">Descripción del Taller</h2>
               <div className="text-gray-600 space-y-4 leading-relaxed text-justify w-full">
                 <p>
                   Bienvenido al taller <strong>{workshop.nombre}</strong>. En este curso aprenderás los conceptos fundamentales e intermedios para dominar esta área y aplicarla en proyectos reales.
                 </p>
                 <p>
-                  Nuestra metodología se enfoca en la práctica estructurada y el aprendizaje colaborativo. Esperamos que disfrutes cada módulo y aproveches al máximo la experiencia interactiva que hemos preparado para todos los asistentes.
+                  Nuestra metodología se enfoca en la práctica estructurada y el aprendizaje colaborativo. Esperamos que disfrutes cada módulo y aproveches al máximo la experiencia interactiva que hemos preparado para todas las personas participantes.
                 </p>
               </div>
             </div>
+
+            {/* Box X: Temario */}
+            {workshop.temario && workshop.temario.length > 0 && (
+              <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+                <h2 className="text-2xl font-bold mb-4 text-gray-800">Temario</h2>
+                <ul className="list-inside list-disc text-gray-600 space-y-2 text-lg">
+                  {workshop.temario.map((tema, index) => (
+                    <li key={index}>{tema}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Box: Requisitos y Consideraciones */}
+            {workshop.requisitos && workshop.requisitos.length > 0 && (
+              <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+                <h2 className="text-2xl font-bold mb-4 text-gray-800">Requisitos y Consideraciones</h2>
+                <ul className="list-inside list-disc text-gray-600 space-y-2 text-lg">
+                  {Array.isArray(workshop.requisitos) 
+                    ? workshop.requisitos.map((req, index) => <li key={index}>{req}</li>)
+                    : <li>{workshop.requisitos}</li>
+                  }
+                </ul>
+              </div>
+            )}
 
             {/* Box 3: Ponentes */}
             <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
@@ -59,36 +93,13 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
                 {ponentes.length > 1 ? "Ponentes" : "Ponente del Taller"}
               </h2>
               
-              <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {ponentes.length > 0 ? (
                   ponentes.map(ponente => (
-                    <div key={ponente.id} className="flex flex-col md:flex-row items-center md:items-start gap-6 bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm">
-                      <div className="flex-shrink-0">
-                        <Image
-                          src={ponente.image}
-                          alt={ponente.name}
-                          width={110}
-                          height={110}
-                          className="rounded-full border-4 border-white shadow-md object-cover"
-                        />
-                      </div>
-                      <div className="flex-grow text-center md:text-left">
-                        <h3 className="font-bold text-xl text-gray-800 mb-1">{ponente.name}</h3>
-                        <p className="text-sm text-blue-700 font-semibold mb-2">{ponente.career}</p>
-                        <p className="text-sm text-gray-600 font-medium mb-3">{ponente.specialty}</p>
-                        <p className="text-sm text-gray-500 mb-5">{ponente.description}</p>
-                        
-                        <Link
-                          href={`/speakers/${ponente.id}`}
-                          className="inline-block text-sm bg-white text-blue-700 hover:bg-blue-50 border border-blue-200 font-semibold px-5 py-2.5 rounded-lg transition shadow-sm"
-                        >
-                          Ver perfil completo
-                        </Link>
-                      </div>
-                    </div>
+                    <SpeakerCard key={ponente.id} speaker={ponente} />
                   ))
                 ) : (
-                  <p className="text-gray-500 italic text-center py-4">Información del ponente no disponible.</p>
+                  <p className="text-gray-500 italic py-4 col-span-full text-center">Información del ponente no disponible.</p>
                 )}
               </div>
             </div>
@@ -102,6 +113,8 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
 
         </div>
       </section>
+
+      <FAQSection faqs={faqsCursoDetalle} title="Preguntas sobre este taller" subtitle="Información útil sobre la inscripción y el curso" />
 
       <Footer />
     </>

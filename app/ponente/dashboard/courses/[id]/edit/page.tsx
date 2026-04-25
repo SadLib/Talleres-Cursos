@@ -48,7 +48,7 @@ export default function EditCoursePage() {
           <h1 className="text-2xl font-bold text-gray-800 mb-2">Taller no encontrado</h1>
           <p className="text-gray-500 mb-6">El taller que buscas no existe o fue eliminado.</p>
           <Link
-            href="/dashboard/ponente"
+            href="/ponente/dashboard"
             className="bg-blue-900 text-white font-medium px-6 py-2.5 rounded-lg hover:bg-blue-800 transition-colors"
           >
             Volver al panel
@@ -72,7 +72,7 @@ export default function EditCoursePage() {
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-yellow-400 to-transparent pointer-events-none"></div>
         <div className="relative z-10 max-w-3xl mx-auto">
           <Link
-            href="/dashboard/ponente"
+            href="/ponente/dashboard"
             className="inline-flex items-center gap-2 text-blue-200 hover:text-white transition-colors text-sm font-medium mb-4"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -222,7 +222,7 @@ export default function EditCoursePage() {
             <div className="pt-4 border-t border-gray-100 mt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
               <button
                 type="button"
-                onClick={() => router.push("/dashboard/ponente")}
+                onClick={() => router.push("/ponente/dashboard")}
                 className="w-full sm:w-auto border border-gray-300 text-gray-600 font-medium px-6 py-2.5 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer order-2 sm:order-1"
               >
                 Cancelar

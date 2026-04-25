@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function CreateCoursePage() {
-  redirect("/dashboard/ponente");
+  redirect("/ponente/dashboard");
 }
