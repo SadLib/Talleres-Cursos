@@ -3,8 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { login } from "@/lib/api/auth";
+import { login, me } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
+import Image from "next/image";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,14 +15,28 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
+    // Leer valores del DOM por si el autocompletado del navegador no disparó onChange
+    const form = e.currentTarget;
+    const correo = (form.elements.namedItem("email") as HTMLInputElement)?.value || email;
+    const pass = (form.elements.namedItem("password") as HTMLInputElement)?.value || password;
+
     try {
-      await login({ correo: email, password });
-      router.push("/dashboard/profile");
+      await login({ correo, password: pass });
+      window.dispatchEvent(new Event("storage"));
+      const usuario = await me();
+      const roles = usuario.roles?.map((r) => r.nombre) ?? [];
+      if (roles.includes("admin")) {
+        router.push("/admin/dashboard");
+      } else if (roles.includes("ponente")) {
+        router.push("/ponente/dashboard");
+      } else {
+        router.push("/dashboard/profile");
+      }
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);
@@ -35,10 +50,17 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex bg-gray-50 text-gray-800 selection:bg-blue-100">
-      
+
       {/* 🔵 LADO IZQUIERDO - BRANDING */}
       <div className="hidden lg:flex w-5/12 bg-blue-900 text-white flex-col justify-center items-center p-12 relative overflow-hidden">
         {/* Decorative elements */}
+        <Image
+          src="/images/fondo4.png"
+          alt="Bienvenido a la plataforma de inscripción a talleres y cursos de MAC"
+          fill
+          className="object-cover object-center"
+          priority
+        />
         <div className="absolute top-0 right-0 w-full h-full opacity-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white to-transparent pointer-events-none"></div>
         <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 pointer-events-none"></div>
 
@@ -49,7 +71,7 @@ export default function Login() {
           <p className="text-blue-100 text-lg mb-10">
             Inicia sesión para acceder a tus talleres, certificados y más.
           </p>
-          
+
           <div className="space-y-6 text-left">
             <div className="flex items-center gap-4">
               <div className="bg-blue-800/80 p-3 rounded-xl shadow-inner">
@@ -117,10 +139,13 @@ export default function Login() {
               <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="email">Correo Electrónico</label>
               <input
                 id="email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 placeholder="correo@ejemplo.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={(e) => setEmail(e.target.value)}
                 required
                 disabled={loading}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-800 outline-none focus:bg-white focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200 disabled:opacity-50"
@@ -132,10 +157,13 @@ export default function Login() {
               <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="password">Contraseña</label>
               <input
                 id="password"
+                name="password"
                 type="password"
+                autoComplete="current-password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onBlur={(e) => setPassword(e.target.value)}
                 required
                 disabled={loading}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-800 outline-none focus:bg-white focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200 disabled:opacity-50"

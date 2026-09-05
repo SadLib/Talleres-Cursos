@@ -6,11 +6,15 @@ import type {
 } from "./types";
 
 export function listarPonentes(): Promise<PonenteDetalle[]> {
-  return apiFetch<PonenteDetalle[]>("/ponentes/", { auth: false });
+  return apiFetch<PonenteDetalle[]>("/instructores", { auth: false });
 }
 
 export function obtenerPonente(id: number): Promise<PonenteDetalle> {
-  return apiFetch<PonenteDetalle>(`/ponentes/${id}`, { auth: false });
+  return apiFetch<PonenteDetalle>(`/instructores/${id}`, { auth: false });
+}
+
+export function obtenerMiPerfilPonente(): Promise<PonenteDetalle> {
+  return apiFetch<PonenteDetalle>("/instructores/me");
 }
 
 export function crearPonente(payload: {
@@ -20,21 +24,47 @@ export function crearPonente(payload: {
   especialidad?: string;
   biografia?: string;
 }): Promise<Ponente> {
-  return apiFetch<Ponente>("/ponentes/", {
+  return apiFetch<Ponente>("/instructores", {
     method: "POST",
-    body: payload,
+    body: {
+      usuario_id: payload.usuario_id,
+      afiliacion: payload.afiliacion,
+      profesion: payload.institucion,
+      especialidad: payload.especialidad,
+      biografia: payload.biografia,
+    },
   });
 }
 
 export function actualizarMiPerfilPonente(
   payload: ActualizarPonentePayload,
 ): Promise<Ponente> {
-  return apiFetch<Ponente>("/ponentes/me", {
+  return apiFetch<Ponente>("/instructores/me", {
     method: "PUT",
-    body: payload,
+    body: {
+      afiliacion: payload.afiliacion,
+      profesion: payload.institucion,
+      especialidad: payload.especialidad,
+      biografia: payload.biografia,
+    },
+  });
+}
+
+export function actualizarPonente(
+  id: number,
+  payload: ActualizarPonentePayload,
+): Promise<PonenteDetalle> {
+  return apiFetch<PonenteDetalle>(`/instructores/${id}`, {
+    method: "PUT",
+    body: {
+      afiliacion: payload.afiliacion,
+      profesion: payload.institucion,
+      especialidad: payload.especialidad,
+      biografia: payload.biografia,
+    },
   });
 }
 
 export function eliminarPonente(id: number): Promise<void> {
-  return apiFetch<void>(`/ponentes/${id}`, { method: "DELETE" });
+  return apiFetch<void>(`/instructores/${id}`, { method: "DELETE" });
 }

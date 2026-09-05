@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { register } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
+import Image from "next/image";
 
 export default function PonenteRegister() {
   const [formData, setFormData] = useState({
@@ -91,12 +92,19 @@ export default function PonenteRegister() {
       {/* 🔵 LADO IZQUIERDO - BRANDING (ADAPTADO PARA PONENTE) */}
       <div className="hidden lg:flex w-5/12 bg-blue-950 text-white flex-col justify-center items-center p-12 relative overflow-hidden">
         {/* Decorative elements */}
+        <Image
+          src="/images/fondo5.png"
+          alt="Bienvenido a la plataforma de inscripción a talleres y cursos de MAC"
+          fill
+          className="object-cover object-center"
+          priority
+        />
         <div className="absolute top-0 right-0 w-full h-full opacity-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white to-transparent pointer-events-none"></div>
         <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 pointer-events-none"></div>
 
         <div className="relative z-10 text-center max-w-sm">
           <h1 className="text-4xl font-extrabold mb-6 leading-tight">
-            Únete como <span className="text-yellow-500">Ponente</span>
+            Únete como <span className="text-blue-900">Ponente</span>
           </h1>
           <p className="text-blue-200 text-lg mb-10">
             Comparte tu conocimiento, administra tus propios talleres y conecta con nuestra comunidad de estudiantes.

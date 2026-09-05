@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { register } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
+import Image from "next/image";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -94,10 +95,17 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex bg-gray-50 text-gray-800 selection:bg-blue-100">
-      
+
       {/* 🔵 LADO IZQUIERDO - BRANDING */}
       <div className="hidden lg:flex w-5/12 bg-blue-900 text-white flex-col justify-center items-center p-12 relative overflow-hidden">
         {/* Decorative elements */}
+        <Image
+          src="/images/fondo4.png"
+          alt="Bienvenido a la plataforma de inscripción a talleres y cursos de MAC"
+          fill
+          className="object-cover object-center"
+          priority
+        />
         <div className="absolute top-0 right-0 w-full h-full opacity-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white to-transparent pointer-events-none"></div>
         <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 pointer-events-none"></div>
 
@@ -108,7 +116,7 @@ export default function RegisterPage() {
           <p className="text-blue-100 text-lg mb-10">
             Crea tu cuenta hoy y accede a talleres, cursos y certificados oficiales.
           </p>
-          
+
           <div className="space-y-6 text-left">
             <div className="flex items-center gap-4">
               <div className="bg-blue-800/80 p-3 rounded-xl shadow-inner">
@@ -179,7 +187,7 @@ export default function RegisterPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            
+
             {/* NOMBRE */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="nombre">Nombre(s) *</label>

@@ -3,17 +3,45 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { logout, me } from "@/lib/api/auth";
+import { getToken } from "@/lib/api/client";
+import type { Usuario } from "@/lib/api/types";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState<Usuario | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
-  // 🔐 SIMULACIÓN DE ESTUDIANTE / USUARIO
-  const user = {
-    name: "Estudiante",
-    image: "/images/perfil.png",
-    role: "user",
+  // 🔐 Detectar sesión activa leyendo el token de localStorage
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = getToken();
+      setIsLoggedIn(!!token);
+      if (token) {
+        try {
+          const user = await me();
+          setUserData(user);
+        } catch (error) {
+          console.error("Error fetching user data in Navbar:", error);
+        }
+      } else {
+        setUserData(null);
+      }
+    };
+    checkAuth();
+    window.addEventListener("storage", checkAuth);
+    return () => window.removeEventListener("storage", checkAuth);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    setIsLoggedIn(false);
+    setIsOpen(false);
+    router.push("/auth/login");
   };
 
 
@@ -53,8 +81,8 @@ export default function Navbar() {
 
         <div className="flex gap-4 items-center">
 
-          {/* 🔥 SI NO HAY USUARIO */}
-          {!user && (
+          {/* 🔥 SI NO HAY SESIÓN ACTIVA */}
+          {!isLoggedIn && (
             <>
               <Link
                 href="/auth/login"
@@ -71,18 +99,18 @@ export default function Navbar() {
             </>
           )}
 
-          {/* 🔥 SI HAY USUARIO */}
-          {user && (
+          {/* 🔥 SI HAY SESIÓN ACTIVA */}
+          {isLoggedIn && (
             <div className="relative" ref={dropdownRef}>
 
               {/* FOTO */}
               <button onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
                 <Image
-                  src={user.image}
+                  src={userData?.foto_url || "/images/user.jpg"}
                   alt="perfil"
                   width={40}
                   height={40}
-                  className="rounded-full object-cover aspect-square w-11 h-11"
+                  className="rounded-full object-cover aspect-square w-11 h-11 border border-gray-200"
                 />
               </button>
 
@@ -117,14 +145,10 @@ export default function Navbar() {
                     Certificados
                   </Link>
 
-
-
                   {/* LOGOUT */}
                   <button
                     className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded text-red-500 cursor-pointer transition-colors"
-                    onClick={() => {
-                      setIsOpen(false);
-                    }}
+                    onClick={handleLogout}
                   >
                     Cerrar sesión
                   </button>

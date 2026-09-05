@@ -11,14 +11,14 @@ export function misInscripciones(): Promise<InscripcionDetalle[]> {
 }
 
 export function inscribirse(cursoId: number): Promise<Inscripcion> {
-  return apiFetch<Inscripcion>("/inscripciones/", {
+  return apiFetch<Inscripcion>("/inscripciones", {
     method: "POST",
     body: { taller_id: cursoId },
   });
 }
 
 export function inscritosPorCurso(cursoId: number): Promise<Inscripcion[]> {
-  return apiFetch<Inscripcion[]>(`/inscripciones/curso/${cursoId}`);
+  return apiFetch<Inscripcion[]>(`/talleres/${cursoId}/inscripciones`);
 }
 
 export function cambiarEstadoInscripcion(
@@ -28,6 +28,16 @@ export function cambiarEstadoInscripcion(
   return apiFetch<Inscripcion>(`/inscripciones/${inscripcionId}`, {
     method: "PATCH",
     body: { estado },
+  });
+}
+
+export function actualizarEstadoFinal(
+  inscripcionId: number,
+  estado_final: "pendiente" | "completado" | "no_asistio",
+): Promise<Inscripcion> {
+  return apiFetch<Inscripcion>(`/inscripciones/${inscripcionId}`, {
+    method: "PUT",
+    body: { estado_final },
   });
 }
 

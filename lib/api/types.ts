@@ -13,6 +13,7 @@ export type Usuario = {
   telefono: string | null;
   carrera?: string | null;
   semestre?: string | null;
+  foto_url?: string | null;
   activo: boolean;
   created_at: string;
   roles: Rol[];
@@ -51,8 +52,14 @@ export type Curso = {
   id: number;
   nombre: string;
   descripcion: string | null;
+  detalles: string | null;
   modalidad: Modalidad | null;
   ubicacion: string | null;
+  fecha_inicio: string | null;
+  fecha_fin: string | null;
+  hora_inicio: string | null;
+  hora_fin: string | null;
+  numero_sesiones: number | null;
   cupo_total: number;
   estado: EstadoCurso;
   created_at: string;
@@ -86,7 +93,7 @@ export type Ponente = {
 export type PonenteDetalle = Ponente & { usuario: Usuario };
 
 export type CursoDetalle = Curso & {
-  ponentes: Ponente[];
+  ponentes: PonenteDetalle[];
   temario: Temario[];
   sesiones: Sesion[];
 };
@@ -106,25 +113,29 @@ export type InscripcionDetalle = Inscripcion & { taller: Curso };
 export type CrearCursoPayload = {
   nombre: string;
   descripcion?: string;
+  detalles?: string;
   modalidad?: Modalidad;
   ubicacion?: string;
+  fecha_inicio?: string;
+  fecha_fin?: string;
+  hora_inicio?: string;
+  hora_fin?: string;
+  numero_sesiones?: number;
   cupo_total: number;
   estado?: EstadoCurso;
-  ponentes_ids?: number[];
-  temario?: { orden: number; tema: string }[];
-  sesiones?: {
-    numero_sesion: number;
-    fecha: string;
-    hora_inicio: string;
-    hora_fin: string;
-  }[];
 };
 
 export type ActualizarCursoPayload = Partial<{
   nombre: string;
   descripcion: string;
+  detalles: string;
   modalidad: Modalidad;
   ubicacion: string;
+  fecha_inicio: string;
+  fecha_fin: string;
+  hora_inicio: string;
+  hora_fin: string;
+  numero_sesiones: number;
   cupo_total: number;
   estado: EstadoCurso;
 }>;
@@ -137,6 +148,8 @@ export type ActualizarUsuarioPayload = Partial<{
   carrera: string;
   semestre: string;
   activo: boolean;
+  foto_url: string;
+  numero_cuenta: string;
 }>;
 
 export type ActualizarPonentePayload = Partial<{

@@ -5,7 +5,7 @@ export function listarUsuarios(params?: {
   skip?: number;
   limit?: number;
 }): Promise<Usuario[]> {
-  return apiFetch<Usuario[]>("/usuarios/", { query: params });
+  return apiFetch<Usuario[]>("/usuarios", { query: params });
 }
 
 export function obtenerUsuario(id: number): Promise<Usuario> {

@@ -1,12 +1,14 @@
 import Navbar from "@/componentes/Navbar";
 import Footer from "@/componentes/Footer";
 import FAQSection from "@/componentes/FAQSection";
-import { workshopsData, speakersData } from "@/lib/data";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ActionBox } from "@/componentes/course/ActionBox";
 import SpeakerCard from "@/componentes/ponente/SpeakerCard";
+import { cursoToWorkshop, instructorToSpeaker } from "@/lib/api/adapters";
+
+const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
 
 const faqsCursoDetalle = [
   { question: "¿Cómo me inscribo a este taller?", answer: "Haz clic en el botón 'Inscribirse al Taller' en el panel lateral. Antes de confirmar, se mostrarán tus datos registrados para verificación. Asegúrate de tener tu perfil completo." },
@@ -17,15 +19,19 @@ const faqsCursoDetalle = [
 
 export default async function CourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const workshop = workshopsData.find((w) => w.id === parseInt(id));
 
-  if (!workshop) {
+  let cursoData;
+  try {
+    const res = await fetch(`${API}/talleres/${id}`, { cache: "no-store" });
+    if (!res.ok) return notFound();
+    cursoData = await res.json();
+  } catch {
     return notFound();
   }
 
-  // Permite renderizar múltiples ponentes si la información está disponible
-  const mainPonente = speakersData.find((s) => s.id === workshop.ponenteId);
-  const ponentes = mainPonente ? [mainPonente] : [];
+  const workshop = cursoToWorkshop(cursoData);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ponentes = (cursoData.ponentes ?? []).map((p: any) => instructorToSpeaker(p));
 
   return (
     <>
@@ -34,35 +40,30 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
       <section className="bg-blue-950 text-white py-14 text-center relative overflow-hidden">
         <Image src="/images/fondo2.png" alt="Fondo" fill className="object-cover object-center opacity-85 pointer-events-none" priority />
         <div className="relative z-10">
-          <h1 className="text-4xl font-bold mb-3 max-w-4xl mx-auto px-4">
-            {workshop.nombre}
-          </h1>
-          <p className="text-xl font-light text-blue-100">
-            Detalles del taller e inscripción
-          </p>
+          <h1 className="text-4xl font-bold mb-3 max-w-4xl mx-auto px-4">{workshop.nombre}</h1>
+          <p className="text-xl font-light text-blue-100">Detalles del taller e inscripción</p>
         </div>
       </section>
 
       <section className="py-12 px-6 lg:px-10 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-          
-          {/* Main Content Column */}
+
           <div className="lg:col-span-2 space-y-10">
-            
-            {/* Box 1: Descripción del Curso */}
+
             <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
               <h2 className="text-2xl font-bold mb-4 text-gray-800">Descripción del Taller</h2>
               <div className="text-gray-600 space-y-4 leading-relaxed text-justify w-full">
-                <p>
-                  Bienvenido al taller <strong>{workshop.nombre}</strong>. En este curso aprenderás los conceptos fundamentales e intermedios para dominar esta área y aplicarla en proyectos reales.
-                </p>
-                <p>
-                  Nuestra metodología se enfoca en la práctica estructurada y el aprendizaje colaborativo. Esperamos que disfrutes cada módulo y aproveches al máximo la experiencia interactiva que hemos preparado para todas las personas participantes.
-                </p>
+                {workshop.descripcion ? (
+                  <p>{workshop.descripcion}</p>
+                ) : (
+                  <>
+                    <p>Bienvenido al taller <strong>{workshop.nombre}</strong>. En este curso aprenderás los conceptos fundamentales e intermedios para dominar esta área y aplicarla en proyectos reales.</p>
+                    <p>Nuestra metodología se enfoca en la práctica estructurada y el aprendizaje colaborativo.</p>
+                  </>
+                )}
               </div>
             </div>
 
-            {/* Box X: Temario */}
             {workshop.temario && workshop.temario.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
                 <h2 className="text-2xl font-bold mb-4 text-gray-800">Temario</h2>
@@ -74,39 +75,22 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
               </div>
             )}
 
-            {/* Box: Requisitos y Consideraciones */}
-            {workshop.requisitos && workshop.requisitos.length > 0 && (
-              <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
-                <h2 className="text-2xl font-bold mb-4 text-gray-800">Requisitos y Consideraciones</h2>
-                <ul className="list-inside list-disc text-gray-600 space-y-2 text-lg">
-                  {Array.isArray(workshop.requisitos) 
-                    ? workshop.requisitos.map((req, index) => <li key={index}>{req}</li>)
-                    : <li>{workshop.requisitos}</li>
-                  }
-                </ul>
-              </div>
-            )}
-
-            {/* Box 3: Ponentes */}
             <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
               <h2 className="text-2xl font-bold mb-6 text-gray-800">
                 {ponentes.length > 1 ? "Ponentes" : "Ponente del Taller"}
               </h2>
-              
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {ponentes.length > 0 ? (
-                  ponentes.map(ponente => (
-                    <SpeakerCard key={ponente.id} speaker={ponente} />
+                  ponentes.map((ponente: ReturnType<typeof instructorToSpeaker>, i: number) => (
+                    <SpeakerCard key={i} speaker={ponente} />
                   ))
                 ) : (
                   <p className="text-gray-500 italic py-4 col-span-full text-center">Información del ponente no disponible.</p>
                 )}
               </div>
             </div>
-
           </div>
 
-          {/* Box 2: Datos Generales e Inscripción */}
           <div className="lg:col-span-1">
             <ActionBox workshop={workshop} />
           </div>
@@ -115,7 +99,6 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
       </section>
 
       <FAQSection faqs={faqsCursoDetalle} title="Preguntas sobre este taller" subtitle="Información útil sobre la inscripción y el curso" />
-
       <Footer />
     </>
   );
